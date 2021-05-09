@@ -11,15 +11,19 @@ import { effects, metaReducers, ROOT_REDUCERS } from './store';
 import * as fromRouter from './store/reducers/router.reducer';
 // !End NGRX
 import { environment } from '@env/environment';
-import { HttpClientModule } from '@angular/common/http';
-import { AuthModule } from '@app/auth/pages/auth.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthModule } from '@app/auth/auth.module';
+import { AuthInterceptor } from '@app/core/interceptors/auth.interceptor';
+import { ResponseInterceptor } from '@app/core/interceptors/response.interceptor';
+import { ErrorInterceptor } from '@app/core/interceptors/error.interceptor';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule,
     AuthModule,
+    AppRoutingModule,
     // !NGRX
     StoreModule.forRoot(ROOT_REDUCERS, {
       metaReducers,
@@ -44,7 +48,23 @@ import { AuthModule } from '@app/auth/pages/auth.module';
     EffectsModule.forRoot(effects),
     StoreRouterConnectingModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ResponseInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

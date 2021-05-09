@@ -16,7 +16,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginFormComponent implements OnInit {
   @Input() isLoading!: boolean;
-  @Input() error!: string | null;
+  @Input() error!: any | null;
   @Output() submitted = new EventEmitter<any>();
   public form!: FormGroup;
   get f() {

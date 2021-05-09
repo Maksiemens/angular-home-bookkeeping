@@ -27,7 +27,6 @@ export class AuthInterceptor implements HttpInterceptor {
     //   }),
     // );
 
-
     if (this.auth.isAuthenticated()) {
       request = request.clone({
         setParams: {

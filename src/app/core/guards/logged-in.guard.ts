@@ -5,7 +5,6 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-
 @Injectable({
   providedIn: 'root',
 })

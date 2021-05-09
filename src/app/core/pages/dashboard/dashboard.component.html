@@ -1,0 +1,18 @@
+<section class="dashboard">
+  <div class="main-wrapper">
+    <div class="app">
+      <app-header
+        class="dashboard__header"
+        (open)="openSidenav()"
+        (logout)="logout()"
+      ></app-header>
+
+      <app-sidenav
+        class="dashboard__sidenav"
+      ></app-sidenav>
+      <article class="content dashboard-page">
+        <router-outlet></router-outlet>
+      </article>
+    </div>
+  </div>
+</section>

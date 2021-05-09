@@ -7,14 +7,14 @@ export const authFeatureKey = 'auth';
 export interface State {
   user: User | null;
   error: string | null;
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | null;
   isLoading: boolean;
 }
 
 export const initialState: State = {
   user: null,
   error: null,
-  isAuthenticated: false,
+  isAuthenticated: null,
   isLoading: false,
 };
 

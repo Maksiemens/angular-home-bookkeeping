@@ -1,18 +1,54 @@
-<form class="registration-form" [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="card">
-    <div class="card-content">
-      <span class="card-title">Создать аккаунт</span>
-      <div class="input-field">
-        <input id="email" type="email" required />
-        <label for="email">Email:</label>
-      </div>
-      <div class="input-field">
-        <input id="password" type="password" required />
-        <label for="password">Пароль:</label>
-      </div>
-    </div>
-    <div class="card-action">
-      <button class="modal-action btn waves-effect">Создать</button>
-    </div>
+<form
+  class="registration-form"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+  <p class="text-xs-center">Регистрация для получения доступа</p>
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input
+      type="text"
+      class="form-control underlined"
+      id="email"
+      placeholder="Введите email"
+    />
+  </div>
+  <div class="form-group has-error">
+    <label for="password">Пароль</label>
+    <input
+      type="password"
+      class="form-control underlined"
+      id="password"
+      placeholder="Введите пароль"
+    />
+    <span class="form-help-text">Error message.</span>
+  </div>
+  <div class="form-group has-success">
+    <label for="name">Имя</label>
+    <input
+      type="text"
+      class="form-control underlined"
+      id="name"
+      placeholder="Введите имя"
+    />
+    <span class="form-help-text">Success message.</span>
+  </div>
+  <div class="form-group">
+    <label for="agree">
+      <input class="checkbox" id="agree" type="checkbox" />
+      <span>Согласен с правилами</span>
+    </label>
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-block btn-primary">
+      Зарегистрироваться
+    </button>
+  </div>
+  <div class="form-group">
+    <p class="text-muted text-xs-center">
+      Уже есть аккаунт?
+      <a [routerLink]="['/auth/login']"> Войти! </a>
+    </p>
   </div>
 </form>

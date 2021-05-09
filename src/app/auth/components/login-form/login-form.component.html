@@ -3,67 +3,79 @@
   [formGroup]="form"
   (ngSubmit)="onSubmit()"
 >
-  <div class="card">
-    <div class="card-content">
-      <span class="card-title">Войти в систему</span>
-      <div class="input-field">
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          [class.invalid]="f.email.errors && f.email.touched"
-        />
-        <label for="email">Email:</label>
-        <span
-          *ngIf="f.email.errors && f.email.touched"
-          class="helper-text red-text"
-        >
-          <span
-            *ngIf="f.email.errors.required"
-          >
-            Email не должен быть пустым
-          </span>
-          <span
-            *ngIf="f.email.errors.email"
-          >
-            Введите корректный email адрес
-          </span>
-        </span>
-      </div>
-      <div class="input-field">
-        <input
-          id="password"
-          type="password"
-          formControlName="password"
-          [class.invalid]="f.password.errors && f.password.touched"
-        />
-        <label for="password">Пароль:</label>
-        <span
-          *ngIf="f.password.errors && f.password.touched"
-          class="helper-text red-text"
-        >
-          <span
-            *ngIf="f.password.errors.required"
-          >
-            Пароль не должен быть пустым
-          </span>
-          <span
-            *ngIf="f.password.errors.minlength && f.password.errors.minlength.requiredLength"
-          >
-            Пароль должен быть больше {{ f.password.errors.minlength.requiredLength }} символов.
-            Сейчас {{ f.password.errors.minlength.actualLength }}.
-          </span>
-        </span>
-      </div>
-    </div>
-    <div class="card-action">
-      <button
-        class="modal-action btn waves-effect"
-        type="submit"
-        [disabled]="form.invalid"
-      >
-        Войти
-      </button>
-    </div>
+
+  <!-- <app-message
+    *ngIf="error"
+  ></app-message> -->
+
+  <p class="text-xs-center">Войдите для работы</p>
+
+  <div
+    class="form-group"
+    [class.has-error]="f.email.errors && f.email.touched"
+    [class.has-success]="f.email.valid && f.email.touched"
+  >
+    <label for="email">Email</label>
+    <input
+      type="email"
+      class="form-control underlined"
+      id="email"
+      placeholder="Введите ваш email"
+      formControlName="email"
+    />
+    <span
+      *ngIf="f.email.errors && f.email.touched"
+      class="form-help-text"
+    >
+      <span *ngIf="f.email.errors.required">
+        Email не должен быть пустым
+      </span>
+      <span *ngIf="f.email.errors.email">
+        Введите корректный email
+      </span>
+    </span>
+  </div>
+  <div
+    class="form-group"
+    [class.has-error]="f.password.errors && f.password.touched"
+    [class.has-success]="f.password.valid && f.password.touched"
+  >
+    <label for="password">Пароль</label>
+    <input
+      type="password"
+      class="form-control underlined"
+      id="password"
+      placeholder="Пароль"
+      formControlName="password"
+    />
+    <span
+      *ngIf="f.password.errors && f.password.touched"
+      class="form-help-text"
+    >
+      <span *ngIf="f.password.errors.required">
+        Пароль не должен быть пустым
+      </span>
+      <span *ngIf="f.password.errors.minlength && f.password.errors.minlength.requiredLength">
+        Пароль должен быть больше {{ f.password.errors.minlength.requiredLength }} символов.
+        Сейчас {{ f.password.errors.minlength.actualLength }}.
+      </span>
+    </span>
+  </div>
+  <div class="form-group">
+    <button
+      class="btn btn-block btn-primary"
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      Войти
+    </button>
+  </div>
+  <div class="form-group">
+    <p class="text-muted text-xs-center">
+      Нет аккаунта?
+      <a [routerLink]="['/auth/registration']">
+        Зарегистрироваться!
+      </a>
+    </p>
   </div>
 </form>

@@ -45,6 +45,7 @@ export class AuthEffects {
             return AuthActions.loginSuccess();
           }),
           catchError((error) => {
+            console.log(error);
             // this.materializeService.toast(error.message);
             return of(AuthActions.loginFailure({ error }));
           }),
@@ -76,39 +77,39 @@ export class AuthEffects {
     { dispatch: false },
   );
 
-  // registration$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(AuthActions.registration),
-  //     switchMap(({ userCredentials }) => {
-  //       return this.authService.registration(userCredentials).pipe(
-  //         map((response) => {
-  //           this.toastService.success(response.message);
-  //           return AuthActions.registrationSuccess();
-  //         }),
-  //         catchError((error) => {
-  //           this.toastService.error(error.message);
-  //           return of(AuthActions.registrationFailure({ error }));
-  //         }),
-  //       );
-  //     }),
-  //   ),
-  // );
+  registration$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.registration),
+      switchMap(({ userCredentials }) => {
+        return this.authService.registration(userCredentials).pipe(
+          map((response) => {
+            // this.toastService.success(response.message);
+            return AuthActions.registrationSuccess();
+          }),
+          catchError((error) => {
+            // this.toastService.error(error.message);
+            return of(AuthActions.registrationFailure({ error }));
+          }),
+        );
+      }),
+    ),
+  );
 
-  // logout$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(AuthActions.logout),
-  //     switchMap(() => {
-  //       return this.authService.logout().pipe(
-  //         map((response) => {
-  //           return AuthActions.logoutSuccess();
-  //         }),
-  //         catchError((error) => {
-  //           return of(AuthActions.logoutFailure({ error }));
-  //         }),
-  //       );
-  //     }),
-  //   ),
-  // );
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.logout),
+      switchMap(() => {
+        return this.authService.logout().pipe(
+          map((response) => {
+            return AuthActions.logoutSuccess();
+          }),
+          catchError((error) => {
+            return of(AuthActions.logoutFailure({ error }));
+          }),
+        );
+      }),
+    ),
+  );
 
   // logoutSuccess$ = createEffect(
   //   () =>

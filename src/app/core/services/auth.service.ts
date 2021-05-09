@@ -11,19 +11,10 @@ import { FbAuth } from '@app/shared/models/fb-auth.model';
   providedIn: 'root',
 })
 export class AuthService {
-  private _tokenKey = 'newborn-auth-token';
-  private _tokenKeyExpiresInDate = 'newborn-auth-token-expires-in-date';
+  private _tokenKey = 'bookkeeping-auth-token';
 
   get token(): string {
-    const currentDate = new Date();
-    const expirationDate = new Date(this.browserStorageService.get(this._tokenKeyExpiresInDate));
-
-    if (currentDate > expirationDate) {
-      this.logout();
-      return '';
-    } else {
-      return this.browserStorageService.get(this._tokenKey);
-    }
+    return this.browserStorageService.get(this._tokenKey);
   }
 
   constructor(
@@ -31,22 +22,22 @@ export class AuthService {
     private browserStorageService: BrowserStorageService
   ) {}
 
-  login(user: User): Observable<any> {
-    // const payload = {
-    //   ...user,
-    //   returnSecureToken: true,
-    // };
-    // return this.http
-    //   .post(
-    //     `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseConfig.apiKey}`,
-    //     payload
-    //   )
-    //   .pipe(tap((response: any) => this.setToken(response)));
-    return of(true);
+  login(user: User): Observable<User> {
+    const payload = {
+      ...user,
+      returnSecureToken: true,
+    };
+    return this.http
+      .post(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseConfig.apiKey}`,
+        payload
+      )
+      .pipe(tap((response: any) => this.setToken(response)));
   }
 
-  logout(): void {
+  logout(): Observable<any> {
     this.setToken(null);
+    return this.isAuthenticated$();
   }
 
   isAuthenticated(): boolean {
@@ -59,18 +50,22 @@ export class AuthService {
 
   private setToken(response: FbAuth | null): void {
     if (response) {
-      const expiresInDate = new Date(new Date().getTime() + +response.expiresIn * 1000);
       this.browserStorageService.set(this._tokenKey, response.idToken);
-      this.browserStorageService.set(this._tokenKeyExpiresInDate, expiresInDate.toString());
     } else {
       this.browserStorageService.clear();
     }
   }
 
-  // registration(userCredentials: Partial<UserCredentials>): Observable<any> {
-  //   return this.http.post(
-  //     `${environment.primaryApiUrl}/auth/registration`,
-  //     userCredentials,
-  //   );
-  // }
+  registration(user: User): Observable<User> {
+    const payload = {
+      ...user,
+      returnSecureToken: true,
+    };
+    return this.http
+      .post(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseConfig.apiKey}`,
+        payload
+      )
+      .pipe(tap((response: any) => this.setToken(response)));
+  }
 }
