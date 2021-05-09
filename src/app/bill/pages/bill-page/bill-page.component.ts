@@ -12,4 +12,11 @@ export class BillPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onRefresh(): void {
+
+
+
+    // loadCurrency
+
+  }
 }

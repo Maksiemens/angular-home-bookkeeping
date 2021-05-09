@@ -5,50 +5,115 @@
 >
   <p class="text-xs-center">Регистрация для получения доступа</p>
 
-  <div class="form-group">
+  <div
+    class="form-group"
+    [class.has-error]="f.email.errors && f.email.touched"
+    [class.has-success]="f.email.valid && f.email.touched"
+  >
     <label for="email">Email</label>
     <input
       type="text"
       class="form-control underlined"
       id="email"
       placeholder="Введите email"
+      formControlName="email"
     />
+    <span
+      *ngIf="f.email.errors && f.email.touched"
+      class="form-help-text"
+    >
+      <span *ngIf="f.email.errors.required">
+        Email не должен быть пустым
+      </span>
+      <span *ngIf="f.email.errors.email">
+        Введите корректный email
+      </span>
+    </span>
   </div>
-  <div class="form-group has-error">
+
+  <div
+    class="form-group"
+    [class.has-error]="f.password.errors && f.password.touched"
+    [class.has-success]="f.password.valid && f.password.touched"
+  >
     <label for="password">Пароль</label>
     <input
       type="password"
       class="form-control underlined"
       id="password"
       placeholder="Введите пароль"
+      formControlName="password"
     />
-    <span class="form-help-text">Error message.</span>
+    <span
+      *ngIf="f.password.errors && f.password.touched"
+      class="form-help-text"
+    >
+      <span *ngIf="f.password.errors.required">
+        Пароль не должен быть пустым
+      </span>
+      <span *ngIf="f.password.errors.minlength && f.password.errors.minlength.requiredLength">
+        Пароль должен быть больше {{ f.password.errors.minlength.requiredLength }} символов.
+        Сейчас {{ f.password.errors.minlength.actualLength }}.
+      </span>
+    </span>
   </div>
-  <div class="form-group has-success">
+
+  <div
+    class="form-group"
+    [class.has-error]="f.name.errors && f.name.touched"
+    [class.has-success]="f.name.valid && f.name.touched"
+  >
     <label for="name">Имя</label>
     <input
       type="text"
       class="form-control underlined"
       id="name"
       placeholder="Введите имя"
+      formControlName="name"
     />
-    <span class="form-help-text">Success message.</span>
+    <span
+      *ngIf="f.name.errors && f.name.touched"
+      class="form-help-text"
+    >
+      <span *ngIf="f.name.errors.required">
+        Имя не должно быть пустым
+      </span>
+      <span *ngIf="f.name.errors.minlength && f.name.errors.minlength.requiredLength">
+        Имя должно быть больше {{ f.name.errors.minlength.requiredLength }} символов.
+        Сейчас {{ f.name.errors.minlength.actualLength }}.
+      </span>
+    </span>
   </div>
-  <div class="form-group">
+  <div
+    class="form-group"
+    [class.has-error]="f.agree.errors && f.agree.touched"
+    [class.has-success]="f.agree.valid && f.agree.touched"
+  >
     <label for="agree">
-      <input class="checkbox" id="agree" type="checkbox" />
+      <input
+        class="checkbox"
+        id="agree"
+        type="checkbox"
+        formControlName="agree"
+      />
       <span>Согласен с правилами</span>
     </label>
   </div>
   <div class="form-group">
-    <button type="submit" class="btn btn-block btn-primary">
+    <button
+      class="btn btn-block btn-primary"
+      type="submit"
+      [disabled]="form.invalid"
+    >
       Зарегистрироваться
     </button>
   </div>
   <div class="form-group">
     <p class="text-muted text-xs-center">
       Уже есть аккаунт?
-      <a [routerLink]="['/auth/login']"> Войти! </a>
+      <a [routerLink]="['/auth/login']">
+        Войти!
+      </a>
     </p>
   </div>
 </form>

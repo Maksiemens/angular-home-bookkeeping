@@ -136,5 +136,8 @@
       }
     }
   },
-  "defaultProject": "angular-home-bookkeeping"
+  "defaultProject": "angular-home-bookkeeping",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }

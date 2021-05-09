@@ -12,9 +12,18 @@ import { FbAuth } from '@app/shared/models/fb-auth.model';
 })
 export class AuthService {
   private _tokenKey = 'bookkeeping-auth-token';
+  private _tokenKeyExpiresInDate = 'bookkeeping-auth-token-expires-in-date';
 
   get token(): string {
-    return this.browserStorageService.get(this._tokenKey);
+    const currentDate = new Date();
+    const expirationDate = new Date(this.browserStorageService.get(this._tokenKeyExpiresInDate));
+
+    if (currentDate > expirationDate) {
+      this.logout();
+      return '';
+    } else {
+      return this.browserStorageService.get(this._tokenKey);
+    }
   }
 
   constructor(
@@ -35,8 +44,12 @@ export class AuthService {
       .pipe(tap((response: any) => this.setToken(response)));
   }
 
-  logout(): Observable<any> {
+  logout(): void {
     this.setToken(null);
+  }
+
+  logout$(): Observable<boolean> {
+    this.logout();
     return this.isAuthenticated$();
   }
 
@@ -50,7 +63,9 @@ export class AuthService {
 
   private setToken(response: FbAuth | null): void {
     if (response) {
+      const expiresInDate = new Date(new Date().getTime() + +response.expiresIn * 1000);
       this.browserStorageService.set(this._tokenKey, response.idToken);
+      this.browserStorageService.set(this._tokenKeyExpiresInDate, expiresInDate.toString());
     } else {
       this.browserStorageService.clear();
     }
@@ -68,4 +83,16 @@ export class AuthService {
       )
       .pipe(tap((response: any) => this.setToken(response)));
   }
+
+  updateAccountInfo(user: User): Observable<any> {
+    const payload = {
+      ...user,
+      returnSecureToken: true,
+    };
+    return this.http
+      .post(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.firebaseConfig.apiKey}`,
+        payload
+      );
+  }
+
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as fromRoot from '@app/store';
+import { User } from '@app/shared/models/user.model';
 
 @Component({
   selector: 'app-login-page',
@@ -21,7 +22,7 @@ export class LoginPageComponent implements OnInit {
     this.error$ = this.store.pipe(select(fromRoot.selectError));
   }
 
-  onSubmit(userCredentials: any): void {
+  onSubmit(userCredentials: User): void {
     this.store.dispatch(fromRoot.login({ userCredentials }));
   }
 }

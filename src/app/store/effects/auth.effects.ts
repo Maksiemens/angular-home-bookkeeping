@@ -99,7 +99,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.logout),
       switchMap(() => {
-        return this.authService.logout().pipe(
+        return this.authService.logout$().pipe(
           map((response) => {
             return AuthActions.logoutSuccess();
           }),
