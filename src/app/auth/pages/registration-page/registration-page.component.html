@@ -1,0 +1,6 @@
+<section class="registration-page">
+  <app-registration-form
+    [error]="error$ | async"
+    (submitted)="onSubmit($event)"
+  ></app-registration-form>
+</section>

@@ -1,0 +1,6 @@
+<section class="login-page">
+  <app-login-form
+    [error]="error$ | async"
+    (submitted)="onSubmit($event)"
+  ></app-login-form>
+</section>
