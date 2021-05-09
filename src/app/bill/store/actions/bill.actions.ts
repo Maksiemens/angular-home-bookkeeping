@@ -1,15 +1,13 @@
 import { createAction, props } from '@ngrx/store';
 
 export const loadBills = createAction(
-  '[Bill] Load Bills'
+  '[Bill / API] Load Bills'
 );
-
 export const loadBillsSuccess = createAction(
-  '[Bill] Load Bills Success',
-  props<{ data: any }>()
+  '[Bill / API] Load Bills Success',
+  props<{ currency: any }>()
 );
-
 export const loadBillsFailure = createAction(
-  '[Bill] Load Bills Failure',
+  '[Bill / API] Load Bills Failure',
   props<{ error: any }>()
 );

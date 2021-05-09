@@ -7,7 +7,7 @@ import * as fromAuth from '@app/store';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { catchError, delay, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, delay, exhaustMap, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import * as AuthActions from '../actions/auth.actions';
 import * as AuthSelectors from '../selectors/auth.selectors';
 
@@ -80,9 +80,18 @@ export class AuthEffects {
   registration$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.registration),
-      switchMap(({ userCredentials }) => {
+      mergeMap(({ userCredentials }) => {
         return this.authService.registration(userCredentials).pipe(
+          mergeMap((res1) => {
+            console.log('res1', res1);
+            const user = {
+              ...userCredentials,
+              bill: 10000,
+            }
+            return this.authService.createUser(user);
+          }),
           map((response) => {
+            console.log('response', response);
             // this.toastService.success(response.message);
             return AuthActions.registrationSuccess();
           }),

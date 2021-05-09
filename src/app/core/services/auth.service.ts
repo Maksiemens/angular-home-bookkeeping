@@ -16,7 +16,9 @@ export class AuthService {
 
   get token(): string {
     const currentDate = new Date();
-    const expirationDate = new Date(this.browserStorageService.get(this._tokenKeyExpiresInDate));
+    const expirationDate = new Date(
+      this.browserStorageService.get(this._tokenKeyExpiresInDate)
+    );
 
     if (currentDate > expirationDate) {
       this.logout();
@@ -63,9 +65,14 @@ export class AuthService {
 
   private setToken(response: FbAuth | null): void {
     if (response) {
-      const expiresInDate = new Date(new Date().getTime() + +response.expiresIn * 1000);
+      const expiresInDate = new Date(
+        new Date().getTime() + +response.expiresIn * 1000
+      );
       this.browserStorageService.set(this._tokenKey, response.idToken);
-      this.browserStorageService.set(this._tokenKeyExpiresInDate, expiresInDate.toString());
+      this.browserStorageService.set(
+        this._tokenKeyExpiresInDate,
+        expiresInDate.toString()
+      );
     } else {
       this.browserStorageService.clear();
     }
@@ -89,10 +96,21 @@ export class AuthService {
       ...user,
       returnSecureToken: true,
     };
-    return this.http
-      .post(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.firebaseConfig.apiKey}`,
-        payload
-      );
+    return this.http.post(
+      `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.firebaseConfig.apiKey}`,
+      payload
+    );
   }
 
+  createUser(user: User): Observable<any> {
+    const payload = {
+      ...user,
+      bill: 10000
+    };
+    return this.http.post(`${environment.firebaseRealtimeDataBase.url}/users.json`, payload);
+  }
+
+  loadUser(): Observable<any> {
+    return this.http.get(`${environment.firebaseRealtimeDataBase.url}/users/${'-M_Hiskx6VCfRLTxpM8n'}.json`);
+  }
 }
